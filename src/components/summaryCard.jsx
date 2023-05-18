@@ -1,7 +1,6 @@
 import {
   createStyles,
   Text,
-  Avatar,
   Group,
   TypographyStylesProvider,
   Paper,

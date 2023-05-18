@@ -38,13 +38,13 @@ export default function MenuSmall({ setComponent }) {
       setComponent(<Home />);
     }
 
-    if (event.target.defaultValue == "TextQA") {
+    if (event.target.defaultValue === "TextQA") {
       setComponent(<TextQAContainer />);
     }
-    if (event.target.defaultValue == "ImageQA") {
+    if (event.target.defaultValue === "ImageQA") {
       setComponent(<ImageQAContainer />);
     }
-    if (event.target.defaultValue == "Summary") {
+    if (event.target.defaultValue === "Summary") {
       setComponent(<SummaryContainer />);
     }
   };

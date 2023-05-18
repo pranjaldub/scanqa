@@ -4,14 +4,11 @@ import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
 import MenuContainer from "../menuContainer/menuContainer";
-import ImageQAContainer from "../imageQAContainer/imageQAContainer";
-import SummaryContainer from "../summaryContainer/summaryContainer";
-import { ReactComponent as ReactLogo } from "./scan.svg";
+
 import { useMediaQuery } from "react-responsive";
 import Home from "./home";
 import MenuSmall from "../menuContainer/menuSmall";
-import { useState } from "react";
-import { motion } from "framer-motion";
+
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
   ...theme.typography.body2,
@@ -22,13 +19,13 @@ const Item = styled(Paper)(({ theme }) => ({
 
 function HomeContainer() {
   const [component, setComponent] = React.useState(<Home />);
-  const isDesktopOrLaptop = useMediaQuery({
-    query: "(min-width: 1224px)",
-  });
-  const isBigScreen = useMediaQuery({ query: "(min-width: 1824px)" });
+  // const isDesktopOrLaptop = useMediaQuery({
+  //   query: "(min-width: 1224px)",
+  // });
+  // const isBigScreen = useMediaQuery({ query: "(min-width: 1824px)" });
   const isTabletOrMobile = useMediaQuery({ query: "(max-width: 1224px)" });
-  const isPortrait = useMediaQuery({ query: "(orientation: portrait)" });
-  const isRetina = useMediaQuery({ query: "(min-resolution: 2dppx)" });
+  // const isPortrait = useMediaQuery({ query: "(orientation: portrait)" });
+  // const isRetina = useMediaQuery({ query: "(min-resolution: 2dppx)" });
 
   return (
     <Box sx={{ flexGrow: 1 }}>

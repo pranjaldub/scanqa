@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import ReactDOM from "react-dom";
+
 import "filepond/dist/filepond.min.css";
 // Import React FilePond
 import { FilePond, File, registerPlugin } from "react-filepond";
