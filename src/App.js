@@ -1,24 +1,17 @@
-import logo from './logo.svg';
-import './App.css';
+import logo from "./logo.svg";
+import "./App.css";
+import HomeContainer from "./containers/homeContainer/homeContainer";
+import NavbarContainer from "./containers/navbarContainer/navbarContainer";
+import { NextUIProvider } from "@nextui-org/react";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <div className="App" style={{ flexGrow: 2 }}>
+        <NavbarContainer />
+        <HomeContainer />
+      </div>
+    </>
   );
 }
 
