@@ -25,16 +25,16 @@ export default function MenuContainer({ setComponent }) {
 
   const handleListItemClick = (event, index) => {
     console.log("menu event", event.target.childNodes[0]);
-    if (index == 0) {
+    if (index === 0) {
       setComponent(<Home />);
     }
-    if (index == 1) {
+    if (index === 1) {
       setComponent(<TextQAContainer />);
     }
-    if (index == 2) {
+    if (index === 2) {
       setComponent(<ImageQAContainer />);
     }
-    if (index == 3) {
+    if (index === 3) {
       setComponent(<SummaryContainer />);
     }
     setSelectedIndex(index);

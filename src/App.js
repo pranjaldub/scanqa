@@ -1,8 +1,6 @@
-import logo from "./logo.svg";
 import "./App.css";
 import HomeContainer from "./containers/homeContainer/homeContainer";
 import NavbarContainer from "./containers/navbarContainer/navbarContainer";
-import { NextUIProvider } from "@nextui-org/react";
 
 function App() {
   return (
