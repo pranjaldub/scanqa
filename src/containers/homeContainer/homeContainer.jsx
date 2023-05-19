@@ -4,6 +4,7 @@ import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
 import MenuContainer from "../menuContainer/menuContainer";
+import FaqContainer from "../faqContainer/faqContainer";
 
 import { useMediaQuery } from "react-responsive";
 import Home from "./home";

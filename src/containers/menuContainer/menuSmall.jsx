@@ -3,6 +3,7 @@ import Home from "../homeContainer/home";
 import TextQAContainer from "../textQAConainer/textQAContainer";
 import ImageQAContainer from "../imageQAContainer/imageQAContainer";
 import SummaryContainer from "../summaryContainer/summaryContainer";
+import FaqContainer from "../faqContainer/faqContainer";
 const useStyles = createStyles((theme) => ({
   root: {
     backgroundColor:
@@ -14,7 +15,7 @@ const useStyles = createStyles((theme) => ({
   },
 
   indicator: {
-    backgroundImage: theme.fn.gradient({ from: "pink", to: "orange" }),
+    backgroundImage: theme.fn.gradient({ from: "#DB7093", to: "#DDA0DD" }),
   },
 
   control: {
@@ -47,12 +48,15 @@ export default function MenuSmall({ setComponent }) {
     if (event.target.defaultValue === "Summary") {
       setComponent(<SummaryContainer />);
     }
+    if (event.target.defaultValue === "FAQ") {
+      setComponent(<FaqContainer />);
+    }
   };
   return (
     <SegmentedControl
       radius="xl"
-      size="md"
-      data={["Home", "TextQA", "ImageQA", "Summary"]}
+      size="sm"
+      data={["Home", "TextQA", "ImageQA", "Summary", "FAQ"]}
       classNames={classes}
       onClick={changeComponent}
     />

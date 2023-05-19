@@ -2,7 +2,7 @@ import * as React from "react";
 import Box from "@mui/material/Box";
 import List from "@mui/material/List";
 import ListItemButton from "@mui/material/ListItemButton";
-
+import FaqContainer from "../faqContainer/faqContainer";
 import ListItemText from "@mui/material/ListItemText";
 import Divider from "@mui/material/Divider";
 
@@ -36,6 +36,9 @@ export default function MenuContainer({ setComponent }) {
     }
     if (index === 3) {
       setComponent(<SummaryContainer />);
+    }
+    if (index === 4) {
+      setComponent(<FaqContainer />);
     }
     setSelectedIndex(index);
   };
@@ -132,6 +135,25 @@ export default function MenuContainer({ setComponent }) {
           }}
         >
           <ListItemText primary="Summary" />
+        </ListItemButton>
+
+        {/* --------------------------------- */}
+        <ListItemButton
+          selected={selectedIndex === 4}
+          onClick={(event) => handleListItemClick(event, 4)}
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            borderRadius: 2,
+            width: "90%",
+            height: 30,
+            "&.Mui-selected": {
+              backgroundColor: "#BF6FC9",
+            },
+          }}
+        >
+          <ListItemText primary="FAQ" />
         </ListItemButton>
         {/* <ListItemButton
           selected={selectedIndex === 1}

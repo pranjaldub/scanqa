@@ -14,6 +14,8 @@ import { IconCheck } from "@tabler/icons-react";
 import image from "./text.svg";
 import TextAreaComponent from "../../components/textArea";
 import { motion } from "framer-motion";
+import { useState } from "react";
+import TextAnswer from "../../components/textAnswer";
 
 const useStyles = createStyles((theme) => ({
   inner: {
@@ -77,6 +79,31 @@ export default function TextQAContainer() {
     damping: 15,
     stiffness: 100,
   };
+
+  const [content, setContent] = useState();
+  const [question, setQuestion] = useState();
+  const [answerObj, setAnswer] = useState({});
+
+  async function getAnswer() {
+    const url =
+      "https://api-inference.huggingface.co/models/distilbert-base-cased-distilled-squad";
+    const data = {
+      inputs: {
+        question: question.target.value,
+        context: content.target.value,
+      },
+    };
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+    // console.log(content.target.value);
+    //console.log(await response.json());
+    setAnswer(await response.json());
+  }
   return (
     <motion.div
       initial={{ opacity: 0, x: 100 }}
@@ -132,21 +159,33 @@ export default function TextQAContainer() {
               <List.Item style={{ display: "flex" }}>
                 <b>Text Summarize</b> – Limit content length with generative AI
               </List.Item> */}
-              <TextAreaComponent rows={5} label="Content" />
+              <TextAreaComponent rows={5} label="Content" set={setContent} />
               <br />
-              <TextAreaComponent rows={2} label="Question" />
+              <TextAreaComponent rows={2} label="Question" set={setQuestion} />
             </List>
 
-            <Group mt={30}>
+            <Group
+              mt={30}
+              style={{ display: "flex", justifyContent: "center" }}
+            >
               <Button
                 radius="xl"
                 size="md"
                 className={classes.control}
                 style={{ backgroundColor: "#C96FA7" }}
+                onClick={getAnswer}
               >
                 Generate Answer
               </Button>
-              <TextAreaComponent rows={2} label="Answer" />
+              <TextAnswer
+                stat={{
+                  label: "answer",
+                  color: "green",
+                  answer: answerObj.answer,
+                  progress: answerObj.score * 100,
+                  progressLabel: Math.trunc(answerObj.score * 100),
+                }}
+              />
             </Group>
           </div>
           <Image src={image} className={classes.image} />

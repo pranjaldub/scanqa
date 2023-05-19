@@ -1,6 +1,6 @@
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
-export default function TextAreaComponent({ rows, label }) {
+export default function TextAreaComponent({ rows, label, set }) {
   return (
     <Box
       component="form"
@@ -18,6 +18,7 @@ export default function TextAreaComponent({ rows, label }) {
           multiline
           maxRows={rows}
           defaultValue=""
+          onChange={set}
         />
       </div>
     </Box>
