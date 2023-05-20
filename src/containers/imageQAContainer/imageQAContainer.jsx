@@ -15,7 +15,8 @@ import image from "./text.svg";
 import TextAreaComponent from "../../components/textArea";
 import { motion } from "framer-motion";
 import DropzoneButton from "../../components/fileUpload";
-
+import React, { useEffect, useRef,useState } from 'react';
+import TextAnswer from "../../components/textAnswer";
 const useStyles = createStyles((theme) => ({
   inner: {
     display: "flex",
@@ -72,6 +73,69 @@ const useStyles = createStyles((theme) => ({
 }));
 
 export default function ImageQAContainer() {
+  const [content, setContent] = useState('');
+  const [question, setQuestion] = useState();
+  const [answerObj, setAnswer] = useState({});
+const [pdfFile, setPdfFile] = useState([])
+  // ===============================================================
+  async function loadPdfWorkers(){
+    const pdfJS = await import('pdfjs-dist/build/pdf');
+			pdfJS.GlobalWorkerOptions.workerSrc =
+				window.location.origin + '/pdf.worker.min.js';
+  }
+useEffect(() => {
+ 
+  loadPdfWorkers();
+ 
+}, [])
+
+useEffect(() => {
+ 
+  if(pdfFile.length){
+    getTextFromPdf()
+    //console.log(pdfFile)
+  }
+ 
+}, [pdfFile])
+
+
+	async function getTextFromPdf() {
+			// We import this here so that it's only loaded during client-side rendering.
+			const pdfJS = await import('pdfjs-dist/build/pdf');
+			pdfJS.GlobalWorkerOptions.workerSrc =
+				window.location.origin + '/pdf.worker.min.js';
+       
+			const doc = await pdfJS.getDocument({url : URL.createObjectURL(pdfFile[0].file)}).promise;
+      let pageTexts = Array.from({length: doc.numPages}, async (v,i) => {
+        return (await (await doc.getPage(i+1)).getTextContent()).items.map(token => token.str).join('');
+    });
+    const text = await Promise.all(pageTexts)
+    setContent(text)
+    console.log("text",text.join(''))
+		
+		};
+	
+// ==================================================================
+async function getAnswer() {
+  const url =
+    "https://api-inference.huggingface.co/models/distilbert-base-cased-distilled-squad";
+  const data = {
+    inputs: {
+      question: question.target.value,
+      context: `${content}`,
+    },
+  };
+  const response = await fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+  // console.log(content.target.value);
+  //console.log(await response.json());
+  setAnswer(await response.json());
+}
   const { classes } = useStyles();
   const spring = {
     type: "spring",
@@ -93,14 +157,14 @@ export default function ImageQAContainer() {
                 className={classes.highlight}
                 style={{ backgroundColor: "#DCB0E2", color: "black" }}
               >
-                ImageQA
+                PdfQA
               </span>{" "}
-              model <br /> for Image based query
+              model <br /> for document based query
             </Title>
             <Text color="dimmed" mt="md">
               Experience the cutting-edge of computer vision with our extractive
               question answering model. Effortlessly retrieve accurate answers
-              from images, revolutionizing information retrieval and unlocking
+              from pdfs, revolutionizing information retrieval and unlocking
               new possibilities for visual data analysis.
             </Text>
 
@@ -123,7 +187,7 @@ export default function ImageQAContainer() {
                 justifyContent: "flex-start",
               }}
             >
-              <DropzoneButton />
+              <DropzoneButton setPdfFile={setPdfFile} />
               {/* <List.Item style={{ display: "flex" }}>
                   <b>Text QA</b> – Question answering from text data
                 </List.Item>
@@ -135,7 +199,7 @@ export default function ImageQAContainer() {
                   <b>Text Summarize</b> – Limit content length with generative AI
                 </List.Item> */}
 
-              <TextAreaComponent rows={2} label="Question" />
+              <TextAreaComponent rows={2} label="Question" set={setQuestion} />
             </List>
 
             <Group mt={30}>
@@ -144,10 +208,19 @@ export default function ImageQAContainer() {
                 size="md"
                 className={classes.control}
                 style={{ backgroundColor: "#C96FA7" }}
+                onClick={getAnswer}
               >
                 Generate Answer
               </Button>
-              <TextAreaComponent rows={2} label="Answer" />
+              <TextAnswer
+                stat={{
+                  label: "answer",
+                  color: "green",
+                  answer: answerObj.answer,
+                  progress: answerObj.score * 100,
+                  progressLabel: Math.trunc(answerObj.score * 100),
+                }}
+              />
             </Group>
           </div>
 
