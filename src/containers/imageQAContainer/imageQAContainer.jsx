@@ -129,6 +129,7 @@ async function getAnswer() {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      "Authorization":"Bearer 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"
     },
     body: JSON.stringify(data),
   });
