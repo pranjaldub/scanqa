@@ -81,19 +81,19 @@ function NavbarContainer() {
 
           <Box sx={{ flexGrow: 1 }}>
             <Tooltip title="Github">
-              <IconButton sx={{ p: 0 }}>
+              <a href="https://github.com/pranjaldub"><IconButton sx={{ p: 0 }}>
                 <GitHubIcon />
-              </IconButton>
+              </IconButton></a>
             </Tooltip>
             <Tooltip title="Linkedin">
-              <IconButton sx={{ p: 0 }}>
+              <a href="https://www.linkedin.com/in/pranjal-d-6060a2183/"><IconButton sx={{ p: 0 }}>
                 <LinkedInIcon />
-              </IconButton>
+              </IconButton></a>
             </Tooltip>
             <Tooltip title="Portfolio">
-              <IconButton sx={{ p: 0 }}>
+              <a href="https://pranjal-dubey.vercel.app/"><IconButton sx={{ p: 0 }}>
                 <AccountCircleIcon />
-              </IconButton>
+              </IconButton></a>
             </Tooltip>
           </Box>
         </Toolbar>
