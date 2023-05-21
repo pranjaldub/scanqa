@@ -9,6 +9,7 @@ import FaqContainer from "../faqContainer/faqContainer";
 import { useMediaQuery } from "react-responsive";
 import Home from "./home";
 import MenuSmall from "../menuContainer/menuSmall";
+import TextQAContainer from "../textQAConainer/textQAContainer";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -19,7 +20,12 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 function HomeContainer() {
-  const [component, setComponent] = React.useState(<Home />);
+  const [toText , setToText] = React.useState(false)
+  const [component, setComponent] = React.useState(<Home setComponent={toTextComponenet} setToText={setToText}/>);
+
+  function toTextComponenet(){
+    setComponent(<TextQAContainer/>)
+  }
   // const isDesktopOrLaptop = useMediaQuery({
   //   query: "(min-width: 1224px)",
   // });
@@ -54,7 +60,7 @@ function HomeContainer() {
             }}
           >
             {isTabletOrMobile && <MenuSmall setComponent={setComponent} />}
-            {!isTabletOrMobile && <MenuContainer setComponent={setComponent} />}
+            {!isTabletOrMobile && <MenuContainer setComponent={setComponent} toText={toText} setToText={setToText} />}
           </Item>
         </Grid>
         <Grid item xs={12} md={12} lg={9}>

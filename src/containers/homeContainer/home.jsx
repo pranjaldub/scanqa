@@ -13,6 +13,8 @@ import {
 import { IconCheck } from "@tabler/icons-react";
 import image from "./scan.svg";
 import { motion } from "framer-motion";
+import TextQAContainer from "../textQAConainer/textQAContainer";
+import React, { useLayoutEffect , useEffect} from "react";
 const useStyles = createStyles((theme) => ({
   inner: {
     display: "flex",
@@ -68,13 +70,25 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-export default function Home() {
+export default function Home({ setComponent,setToText }) {
+  console.log("home rendered")
+  //console.log(setToText)
+  // React.useEffect(()=>{setToText(false)},[])
+  
   const { classes } = useStyles();
   const spring = {
     type: "spring",
     damping: 15,
     stiffness: 100,
   };
+  function changeComponent(){
+    setToText(true)
+    setComponent(<TextQAContainer />);
+    
+    
+    
+  }
+  // useEffect(()=>{setToText(false)},[])
   return (
     <motion.div
       initial={{ opacity: 0, x: 100 }}
@@ -126,8 +140,8 @@ export default function Home() {
                 <b>Text QA</b> – Question answering from text data
               </List.Item>
               <List.Item style={{ display: "flex" }}>
-                <b>Image QA</b> – Question answering from images such as
-                invoices
+                <b>Pdf QA</b> – Question answering from PDFs such as
+                research papers
               </List.Item>
               <List.Item style={{ display: "flex" }}>
                 <b>Text Summarize</b> – Limit content length with generative AI
@@ -140,9 +154,11 @@ export default function Home() {
                 size="md"
                 className={classes.control}
                 style={{ backgroundColor: "#C96FA7" }}
+                onClick={()=> {changeComponent()}}
               >
                 Get started
               </Button>
+              <a href="https://github.com/pranjaldub/scanqa">
               <Button
                 variant="default"
                 radius="xl"
@@ -152,6 +168,7 @@ export default function Home() {
               >
                 Source code
               </Button>
+              </a>
             </Group>
           </div>
           <Image src={image} className={classes.image} />

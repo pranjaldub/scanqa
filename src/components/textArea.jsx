@@ -12,6 +12,8 @@ export default function TextAreaComponent({ rows, label, set }) {
     >
       <div>
         <TextField
+        
+       required={true}
           fullWidth
           id="outlined-multiline-flexible"
           label={label}

@@ -16,6 +16,7 @@ import { motion } from "framer-motion";
 import SummaryCard from "../../components/summaryCard";
 import CustomizedSlider from "../../components/slider";
 import Divider from "@mui/material/Divider";
+import { useState , useEffect } from "react";
 const useStyles = createStyles((theme) => ({
   inner: {
     display: "flex",
@@ -78,6 +79,43 @@ export default function SummaryContainer() {
     damping: 15,
     stiffness: 100,
   };
+
+  const [content, setContent] = useState();
+ 
+  const [answerObj, setAnswer] = useState({});
+  const [loading , setLoading] = useState(false)
+  const [enableButton , setEnableButton] = useState(false)
+  useEffect(()=>{
+   if(content?.target?.value.length>0 ){
+     setEnableButton(true)
+   }
+   else{
+     setEnableButton(false)
+   }
+  },[content ])
+  async function getAnswer() {
+    setLoading(true)
+    const url =
+      "https://api-inference.huggingface.co/models/facebook/bart-large-cnn";
+    const data = {
+      inputs: content.target.value,
+      
+    };
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization":"Bearer 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"
+      },
+      body: JSON.stringify(data),
+    });
+    // console.log(content.target.value);
+    //console.log(await response.json());
+    const resp = await response.json()
+    setAnswer(resp[0]);
+    console.log(resp)
+    setLoading(false)
+  }
   return (
     <motion.div
       initial={{ opacity: 0, x: 100 }}
@@ -124,30 +162,28 @@ export default function SummaryContainer() {
                 alignItems: "center",
               }}
             >
-              <span
-                style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <TextAreaComponent rows={5} label="Content" />
-                &nbsp; &nbsp; &nbsp;
-                <Divider orientation="vertical" flexItem />
-                &nbsp; &nbsp;
+              
+                <TextAreaComponent rows={5} label="Content"  set={setContent}   />
+              
+                {/* <Divider orientation="vertical" flexItem /> */}
+                
+              
+              &nbsp; &nbsp;
                 <Button
                   radius="xl"
                   size="md"
                   className={classes.control}
                   style={{ backgroundColor: "#C96FA7" }}
+                  onClick={getAnswer}
+                  disabled={!enableButton}
                 >
-                  Generate Summary
+                   {loading && "Getting Answer"}
+                {!loading && "Generate Answer"}
                 </Button>
-              </span>
-              <CustomizedSlider />
+              {/* <CustomizedSlider /> */}
+              &nbsp; &nbsp;
               <div style={{ display: "block" }}>
-                <SummaryCard body="summary generated ...." />
+                <SummaryCard body={answerObj.summary_text} />
               </div>
             </List>
           </div>

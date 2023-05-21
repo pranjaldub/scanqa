@@ -13,7 +13,7 @@ import ImageQAContainer from "../imageQAContainer/imageQAContainer";
 import SummaryContainer from "../summaryContainer/summaryContainer";
 import Home from "../homeContainer/home";
 
-export default function MenuContainer({ setComponent }) {
+export default function MenuContainer({ setComponent , toText ,setToText  }) {
   // const isDesktopOrLaptop = useMediaQuery({
   //   query: "(min-width: 1224px)",
   // });
@@ -22,14 +22,26 @@ export default function MenuContainer({ setComponent }) {
   // const isPortrait = useMediaQuery({ query: "(orientation: portrait)" });
   // const isRetina = useMediaQuery({ query: "(min-resolution: 2dppx)" });
   const [selectedIndex, setSelectedIndex] = React.useState(1);
-
+  
+function changeCP(){
+  setSelectedIndex(1)
+  setComponent(<Home  setComponent={setComponent} setToText={setToText} />)
+  setToText(false)
+}
+  // React.useEffect(()=>{},[changedToText])
   const handleListItemClick = (event, index) => {
+    
     console.log("menu event", event.target.childNodes[0]);
-    if (index === 0) {
-      setComponent(<Home />);
+    if (  index === 1) {
+      
+      setComponent(<Home  setComponent={setComponent} setToText={setToText} />);
+      
     }
-    if (index === 1) {
-      setComponent(<TextQAContainer />);
+    if ( toText || index === 0) {
+      setToText(false)
+      
+      setComponent(<TextQAContainer  />);
+     
     }
     if (index === 2) {
       setComponent(<ImageQAContainer />);
@@ -63,8 +75,26 @@ export default function MenuContainer({ setComponent }) {
         }}
         xs={3}
       >
+            <ListItemButton
+          selected={selectedIndex === 1 && !toText}
+          onClick={(event) => {changeCP()}}
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            borderRadius: 2,
+            width: "90%",
+            height: 30,
+            "&.Mui-selected": {
+              backgroundColor: "#BF6FC9",
+            },
+            
+          }}
+        >
+          <ListItemText primary="Home" />
+        </ListItemButton>
         <ListItemButton
-          selected={selectedIndex === 0}
+          selected={selectedIndex === 0 || toText}
           onClick={(event) => handleListItemClick(event, 0)}
           sx={{
             display: "flex",
@@ -76,30 +106,12 @@ export default function MenuContainer({ setComponent }) {
             "&.Mui-selected": {
               backgroundColor: "#BF6FC9",
             },
-            "&.Mui-focusVisible": {
-              backgroundColor: "#BF6FC9",
-            },
-          }}
-        >
-          <ListItemText primary="Home" />
-        </ListItemButton>
-        <ListItemButton
-          selected={selectedIndex === 1}
-          onClick={(event) => handleListItemClick(event, 1)}
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            borderRadius: 2,
-            width: "90%",
-            height: 30,
-            "&.Mui-selected": {
-              backgroundColor: "#BF6FC9",
-            },
+            
           }}
         >
           <ListItemText primary="TextQA" />
         </ListItemButton>
+    
         {/* --------------------------------------- */}
         <ListItemButton
           selected={selectedIndex === 2}
@@ -116,7 +128,7 @@ export default function MenuContainer({ setComponent }) {
             },
           }}
         >
-          <ListItemText primary="ImageQA" />
+          <ListItemText primary="PdfQA" />
         </ListItemButton>
         {/* ---------------------------------------- */}
         <ListItemButton

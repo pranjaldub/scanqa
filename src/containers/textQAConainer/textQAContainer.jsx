@@ -14,7 +14,7 @@ import { IconCheck } from "@tabler/icons-react";
 import image from "./text.svg";
 import TextAreaComponent from "../../components/textArea";
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import TextAnswer from "../../components/textAnswer";
 
 const useStyles = createStyles((theme) => ({
@@ -73,6 +73,7 @@ const useStyles = createStyles((theme) => ({
 }));
 
 export default function TextQAContainer() {
+ 
   const { classes } = useStyles();
   const spring = {
     type: "spring",
@@ -80,11 +81,21 @@ export default function TextQAContainer() {
     stiffness: 100,
   };
 
-  const [content, setContent] = useState();
-  const [question, setQuestion] = useState();
+  const [content, setContent] = useState({});
+  const [question, setQuestion] = useState({});
   const [answerObj, setAnswer] = useState({});
-
+  const [loading , setLoading] = useState(false)
+  const [enableButton , setEnableButton] = useState(false)
+ useEffect(()=>{
+  if(content?.target?.value.length>0 && question?.target?.value.length>0){
+    setEnableButton(true)
+  }
+  else{
+    setEnableButton(false)
+  }
+ },[content , question])
   async function getAnswer() {
+    setLoading(true)
     const url =
       "https://api-inference.huggingface.co/models/distilbert-base-cased-distilled-squad";
     const data = {
@@ -104,7 +115,10 @@ export default function TextQAContainer() {
     // console.log(content.target.value);
     //console.log(await response.json());
     setAnswer(await response.json());
+    setLoading(false)
   }
+
+  
   return (
     <motion.div
       initial={{ opacity: 0, x: 100 }}
@@ -160,9 +174,9 @@ export default function TextQAContainer() {
               <List.Item style={{ display: "flex" }}>
                 <b>Text Summarize</b> – Limit content length with generative AI
               </List.Item> */}
-              <TextAreaComponent rows={5} label="Content" set={setContent} />
+              <TextAreaComponent rows={5} label="Content" set={setContent} setButton={setEnableButton} />
               <br />
-              <TextAreaComponent rows={2} label="Question" set={setQuestion} />
+              <TextAreaComponent rows={2} label="Question" set={setQuestion}/>
             </List>
 
             <Group
@@ -175,8 +189,10 @@ export default function TextQAContainer() {
                 className={classes.control}
                 style={{ backgroundColor: "#C96FA7" }}
                 onClick={getAnswer}
+               disabled={!enableButton}
               >
-                Generate Answer
+                 {loading && "Getting Answer"}
+                {!loading && "Generate Answer"}
               </Button>
               <TextAnswer
                 stat={{

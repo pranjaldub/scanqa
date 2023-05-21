@@ -28,21 +28,22 @@ const useStyles = createStyles((theme) => ({
 export default function SummaryCard({ body }) {
   const { classes } = useStyles();
   return (
-    <Paper withBorder radius="md" className={classes.comment}>
+    <Paper withBorder radius="md" className={classes.comment} style={{display:"flex",justifyContent:"flex-start",flexDirection:"column"}}>
       <Group>
         <div>
           <Text fz="sm">"Your summary will be generate here"</Text>
           {/* <Text fz="xs" c="dimmed">
               {postedAt}
             </Text> */}
-        </div>
-      </Group>
-      <TypographyStylesProvider className={classes.body}>
+     &nbsp;
+     
         <div
           className={classes.content}
           dangerouslySetInnerHTML={{ __html: body }}
+          
         />
-      </TypographyStylesProvider>
+        </div>
+      </Group>
     </Paper>
   );
 }

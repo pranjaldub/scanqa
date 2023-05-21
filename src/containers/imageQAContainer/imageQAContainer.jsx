@@ -76,7 +76,19 @@ export default function ImageQAContainer() {
   const [content, setContent] = useState('');
   const [question, setQuestion] = useState();
   const [answerObj, setAnswer] = useState({});
+  const [loading , setLoading] = useState(false)
 const [pdfFile, setPdfFile] = useState([])
+const [file,setFile] = useState(false)
+
+const [enableButton , setEnableButton] = useState(false)
+ useEffect(()=>{
+  if(question?.target?.value.length>0 && file){
+    setEnableButton(true)
+  }
+  else{
+    setEnableButton(false)
+  }
+ },[ question , file])
   // ===============================================================
   async function loadPdfWorkers(){
     const pdfJS = await import('pdfjs-dist/build/pdf');
@@ -112,11 +124,12 @@ useEffect(() => {
     const text = await Promise.all(pageTexts)
     setContent(text)
     console.log("text",text.join(''))
-		
+		setFile(true)
 		};
 	
 // ==================================================================
 async function getAnswer() {
+  setLoading(true)
   const url =
     "https://api-inference.huggingface.co/models/distilbert-base-cased-distilled-squad";
   const data = {
@@ -136,6 +149,7 @@ async function getAnswer() {
   // console.log(content.target.value);
   //console.log(await response.json());
   setAnswer(await response.json());
+  setLoading(false)
 }
   const { classes } = useStyles();
   const spring = {
@@ -210,8 +224,10 @@ async function getAnswer() {
                 className={classes.control}
                 style={{ backgroundColor: "#C96FA7" }}
                 onClick={getAnswer}
+                disabled={!enableButton}
               >
-                Generate Answer
+               {loading && "Getting Answer"}
+                {!loading && "Generate Answer"}
               </Button>
               <TextAnswer
                 stat={{

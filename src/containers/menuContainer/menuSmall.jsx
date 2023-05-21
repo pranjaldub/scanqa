@@ -42,7 +42,7 @@ export default function MenuSmall({ setComponent }) {
     if (event.target.defaultValue === "TextQA") {
       setComponent(<TextQAContainer />);
     }
-    if (event.target.defaultValue === "ImageQA") {
+    if (event.target.defaultValue === "PdfQA") {
       setComponent(<ImageQAContainer />);
     }
     if (event.target.defaultValue === "Summary") {
@@ -56,7 +56,7 @@ export default function MenuSmall({ setComponent }) {
     <SegmentedControl
       radius="xl"
       size="sm"
-      data={["Home", "TextQA", "ImageQA", "Summary", "FAQ"]}
+      data={["Home", "TextQA", "PdfQA", "Summary", "FAQ"]}
       classNames={classes}
       onClick={changeComponent}
     />
