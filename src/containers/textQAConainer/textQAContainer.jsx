@@ -10,6 +10,7 @@ import {
   ThemeIcon,
   rem,
 } from "@mantine/core";
+import Alert from "../../components/alert";
 import { IconCheck } from "@tabler/icons-react";
 import image from "./text.svg";
 import TextAreaComponent from "../../components/textArea";
@@ -17,7 +18,9 @@ import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import TextAnswer from "../../components/textAnswer";
 import { fetchTextAnswer } from "../../api/api";
-
+import { Loader } from '@mantine/core';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 const useStyles = createStyles((theme) => ({
   inner: {
     display: "flex",
@@ -87,6 +90,7 @@ export default function TextQAContainer() {
   const [answerObj, setAnswer] = useState({});
   const [loading , setLoading] = useState(false)
   const [enableButton , setEnableButton] = useState(false)
+
  useEffect(()=>{
   if(content?.target?.value.length>0 && question?.target?.value.length>0){
     setEnableButton(true)
@@ -105,7 +109,17 @@ export default function TextQAContainer() {
     setLoading(false)
     }
     catch (error) {
-      alert("Might be a connection issue, please try again")
+   // alert("Might be a connection issue . Please try again later.")
+   toast.error('🦄 Wow so easy!', {
+    position: "bottom-center",
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "colored",
+    });
       setLoading(false)
     }
   }
@@ -170,11 +184,8 @@ export default function TextQAContainer() {
               <br />
               <TextAreaComponent rows={2} label="Question" set={setQuestion}/>
             </List>
-
-            <Group
-              mt={30}
-              style={{ display: "flex", justifyContent: "center" }}
-            >
+            <Group mt={30} style={{ display: "flex", justifyContent: "center" }}>
+             
               <Button
                 radius="xl"
                 size="md"
@@ -183,9 +194,10 @@ export default function TextQAContainer() {
                 onClick={getAnswer}
                disabled={!enableButton}
               >
-                 {loading && "Getting Answer"}
+                 {loading && <Loader  color="white" variant="dots" /> }
                 {!loading && "Generate Answer"}
               </Button>
+              <ToastContainer />
               <TextAnswer
                 stat={{
                   label: "answer",

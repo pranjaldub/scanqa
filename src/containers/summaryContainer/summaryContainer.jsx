@@ -11,6 +11,8 @@ import {
   rem,
 } from "@mantine/core";
 import { IconCheck } from "@tabler/icons-react";
+import { ToastContainer, toast } from 'react-toastify';
+import { Loader } from '@mantine/core';
 import image from "./text.svg";
 import TextAreaComponent from "../../components/textArea";
 import { motion } from "framer-motion";
@@ -108,7 +110,17 @@ export default function SummaryContainer() {
       setAnswer(data[0]);
       setLoading(false)
     } catch (error) {
-      alert("Might be a connection issue, please try again")
+      
+      toast.error('Might be a connection issue .Please try again later', {
+        position: "bottom-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        });
       setLoading(false)
     }
     
@@ -179,10 +191,11 @@ export default function SummaryContainer() {
                   disabled={!enableButton}
                   
                 >
-                   {loading && "Getting Answer"}
+                   {loading &&<Loader color="white" variant="dots" /> }
                 {!loading && "Generate Answer"}
 
                 </Button>
+                <ToastContainer />
               {/* <CustomizedSlider /> */}
            
                 <SummaryCard body={answerObj?.summary_text}  />

@@ -11,6 +11,7 @@ import {
   rem,
 } from "@mantine/core";
 import { IconCheck } from "@tabler/icons-react";
+import { ToastContainer, toast } from 'react-toastify';
 import image from "./text.svg";
 import TextAreaComponent from "../../components/textArea";
 import { motion } from "framer-motion";
@@ -18,6 +19,7 @@ import DropzoneButton from "../../components/fileUpload";
 import React, { useEffect, useRef,useState } from 'react';
 import TextAnswer from "../../components/textAnswer";
 import { fetchPdfAnswer } from "../../api/api";
+import { Loader } from '@mantine/core';
 const useStyles = createStyles((theme) => ({
   inner: {
     display: "flex",
@@ -130,7 +132,17 @@ useEffect(() => {
 		setFile(true)
   }
   catch (error) {
-   alert(error.message)
+   //alert(error.message)
+   toast.error(error.message, {
+    position: "bottom-center",
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "colored",
+    });
    setPdfFile([])
    setFile(false)
   
@@ -148,7 +160,17 @@ async function getAnswer() {
   setLoading(false)
   }
   catch (error) {
-    alert("something went wrong, please try again")
+    //alert("something went wrong, please try again")
+    toast.error("something went wrong. Please try again later.", {
+      position: "bottom-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+      });
     setLoading(false)
   }
 }
@@ -227,9 +249,10 @@ async function getAnswer() {
                 onClick={getAnswer}
                 disabled={!enableButton}
               >
-               {loading && "Getting Answer"}
+               {loading && <Loader color="white" variant="dots" /> }
                 {!loading && "Generate Answer"}
               </Button>
+              <ToastContainer />
               <TextAnswer
                 stat={{
                   label: "answer",
