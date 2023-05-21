@@ -9,7 +9,7 @@ import Container from "@mui/material/Container";
 
 import Tooltip from "@mui/material/Tooltip";
 
-import AdbIcon from "@mui/icons-material/Adb";
+import AdbIcon from '@mui/icons-material/DocumentScanner';
 import GitHubIcon from "@mui/icons-material/GitHub";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
