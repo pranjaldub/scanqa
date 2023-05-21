@@ -17,6 +17,7 @@ import { motion } from "framer-motion";
 import DropzoneButton from "../../components/fileUpload";
 import React, { useEffect, useRef,useState } from 'react';
 import TextAnswer from "../../components/textAnswer";
+import { fetchPdfAnswer } from "../../api/api";
 const useStyles = createStyles((theme) => ({
   inner: {
     display: "flex",
@@ -104,6 +105,7 @@ useEffect(() => {
 useEffect(() => {
  
   if(pdfFile.length){
+    
     getTextFromPdf()
     //console.log(pdfFile)
   }
@@ -112,6 +114,7 @@ useEffect(() => {
 
 
 	async function getTextFromPdf() {
+    try{
 			// We import this here so that it's only loaded during client-side rendering.
 			const pdfJS = await import('pdfjs-dist/build/pdf');
 			pdfJS.GlobalWorkerOptions.workerSrc =
@@ -125,31 +128,29 @@ useEffect(() => {
     setContent(text)
     console.log("text",text.join(''))
 		setFile(true)
+  }
+  catch (error) {
+   alert(error.message)
+   setPdfFile([])
+   setFile(false)
+  
+ }
 		};
 	
 // ==================================================================
 async function getAnswer() {
   setLoading(true)
-  const url =
-    "https://api-inference.huggingface.co/models/distilbert-base-cased-distilled-squad";
-  const data = {
-    inputs: {
-      question: question.target.value,
-      context: `${content}`,
-    },
-  };
-  const response = await fetch(url, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "Authorization":"Bearer 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"
-    },
-    body: JSON.stringify(data),
-  });
+  try{
+  const data =await fetchPdfAnswer(question.target.value,content)
   // console.log(content.target.value);
   //console.log(await response.json());
-  setAnswer(await response.json());
+  setAnswer(data);
   setLoading(false)
+  }
+  catch (error) {
+    alert("something went wrong, please try again")
+    setLoading(false)
+  }
 }
   const { classes } = useStyles();
   const spring = {
@@ -217,7 +218,7 @@ async function getAnswer() {
               <TextAreaComponent rows={2} label="Question" set={setQuestion} />
             </List>
 
-            <Group mt={30}>
+            <Group mt={30} style={{ display: "flex", justifyContent: "center" }}>
               <Button
                 radius="xl"
                 size="md"

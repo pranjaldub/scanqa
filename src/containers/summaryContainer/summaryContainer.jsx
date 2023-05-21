@@ -4,6 +4,7 @@ import {
   Container,
   Title,
   Button,
+  Group,
   Text,
   List,
   ThemeIcon,
@@ -17,6 +18,7 @@ import SummaryCard from "../../components/summaryCard";
 import CustomizedSlider from "../../components/slider";
 import Divider from "@mui/material/Divider";
 import { useState , useEffect } from "react";
+import { fetchSummary } from "../../api/api";
 const useStyles = createStyles((theme) => ({
   inner: {
     display: "flex",
@@ -32,6 +34,7 @@ const useStyles = createStyles((theme) => ({
     [theme.fn.smallerThan("md")]: {
       maxWidth: "100%",
       marginRight: 0,
+     
     },
   },
 
@@ -95,26 +98,21 @@ export default function SummaryContainer() {
   },[content ])
   async function getAnswer() {
     setLoading(true)
-    const url =
-      "https://api-inference.huggingface.co/models/facebook/bart-large-cnn";
-    const data = {
-      inputs: content.target.value,
+    try {
       
-    };
-    const response = await fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization":"Bearer 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"
-      },
-      body: JSON.stringify(data),
-    });
-    // console.log(content.target.value);
-    //console.log(await response.json());
-    const resp = await response.json()
-    setAnswer(resp[0]);
-    console.log(resp)
-    setLoading(false)
+      const data = await fetchSummary(content.target.value)
+      // if(data?.err){
+      //   //console.log("inside erro if")
+      //     alert(data.message)
+      // }
+      setAnswer(data[0]);
+      setLoading(false)
+    } catch (error) {
+      alert("Might be a connection issue, please try again")
+      setLoading(false)
+    }
+    
+ 
   }
   return (
     <motion.div
@@ -159,7 +157,6 @@ export default function SummaryContainer() {
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "flex-start",
-                alignItems: "center",
               }}
             >
               
@@ -167,24 +164,30 @@ export default function SummaryContainer() {
               
                 {/* <Divider orientation="vertical" flexItem /> */}
                 
-              
-              &nbsp; &nbsp;
+             
+              {/* <div style={{ display: "flex" , justifyContent:"center" , flexDirection:"column"}}> */}
+              <Group
+              mt={30}
+              style={{ display: "flex", justifyContent: "center" }}
+            >
                 <Button
                   radius="xl"
                   size="md"
                   className={classes.control}
-                  style={{ backgroundColor: "#C96FA7" }}
+                  style={{ backgroundColor: "#C96FA7",marginBottom:"2rem" }}
                   onClick={getAnswer}
                   disabled={!enableButton}
+                  
                 >
                    {loading && "Getting Answer"}
                 {!loading && "Generate Answer"}
+
                 </Button>
               {/* <CustomizedSlider /> */}
-              &nbsp; &nbsp;
-              <div style={{ display: "block" }}>
-                <SummaryCard body={answerObj.summary_text} />
-              </div>
+           
+                <SummaryCard body={answerObj?.summary_text}  />
+              {/* </div> */}
+              </Group>
             </List>
           </div>
           <Image src={image} className={classes.image} />

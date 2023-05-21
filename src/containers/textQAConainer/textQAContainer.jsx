@@ -16,6 +16,7 @@ import TextAreaComponent from "../../components/textArea";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import TextAnswer from "../../components/textAnswer";
+import { fetchTextAnswer } from "../../api/api";
 
 const useStyles = createStyles((theme) => ({
   inner: {
@@ -94,28 +95,19 @@ export default function TextQAContainer() {
     setEnableButton(false)
   }
  },[content , question])
-  async function getAnswer() {
+  async function  getAnswer() {
     setLoading(true)
-    const url =
-      "https://api-inference.huggingface.co/models/distilbert-base-cased-distilled-squad";
-    const data = {
-      inputs: {
-        question: question.target.value,
-        context: content.target.value,
-      },
-    };
-    const response = await fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization":"Bearer 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"
-      },
-      body: JSON.stringify(data),
-    });
-    // console.log(content.target.value);
-    //console.log(await response.json());
-    setAnswer(await response.json());
+    try{
+    const data =await fetchTextAnswer(question.target.value,content.target.value)
+   
+    console.log(data)
+    setAnswer(data);
     setLoading(false)
+    }
+    catch (error) {
+      alert("Might be a connection issue, please try again")
+      setLoading(false)
+    }
   }
 
   

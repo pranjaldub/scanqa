@@ -140,7 +140,7 @@ export default function Home({ setComponent,setToText }) {
                 <b>Text QA</b> – Question answering from text data
               </List.Item>
               <List.Item style={{ display: "flex" }}>
-                <b>Pdf QA</b> – Question answering from PDFs such as
+              <b>Pdf QA</b> – Question answering from PDFs such as
                 research papers
               </List.Item>
               <List.Item style={{ display: "flex" }}>
