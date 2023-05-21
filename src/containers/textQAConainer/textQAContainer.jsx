@@ -110,7 +110,7 @@ export default function TextQAContainer() {
     }
     catch (error) {
    // alert("Might be a connection issue . Please try again later.")
-   toast.error('🦄 Wow so easy!', {
+   toast.error('Might be a connection issue . Please try again later.', {
     position: "bottom-center",
     autoClose: 5000,
     hideProgressBar: false,
