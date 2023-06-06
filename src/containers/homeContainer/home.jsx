@@ -169,7 +169,7 @@ export default function Home({setComponent, setToText}) {
                     className={classes.control}
                     style={{backgroundColor: "#C96FA7"}}
                   >
-                    Explore Huggingface
+                    More Models
                   </Button>
                 </a>
               )}
