@@ -148,7 +148,7 @@ export default function Home({setComponent, setToText}) {
             </List>
 
             <Group mt={30}>
-              {!isTabletOrMobile && (
+              {!isTabletOrMobile ? (
                 <Button
                   radius="xl"
                   size="md"
@@ -160,6 +160,18 @@ export default function Home({setComponent, setToText}) {
                 >
                   Get started
                 </Button>
+              ) : (
+                <a href="https://huggingface.co/models">
+                  {" "}
+                  <Button
+                    radius="xl"
+                    size="md"
+                    className={classes.control}
+                    style={{backgroundColor: "#C96FA7"}}
+                  >
+                    Explore Huggingface
+                  </Button>
+                </a>
               )}
               <a href="https://github.com/pranjaldub/scanqa">
                 <Button
