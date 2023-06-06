@@ -10,11 +10,12 @@ import {
   ThemeIcon,
   rem,
 } from "@mantine/core";
-import { IconCheck } from "@tabler/icons-react";
+import {IconCheck} from "@tabler/icons-react";
 import image from "./scan.svg";
-import { motion } from "framer-motion";
+import {motion} from "framer-motion";
 import TextQAContainer from "../textQAConainer/textQAContainer";
-import React, { useLayoutEffect , useEffect} from "react";
+import React, {useLayoutEffect, useEffect} from "react";
+import {useMediaQuery} from "react-responsive";
 const useStyles = createStyles((theme) => ({
   inner: {
     display: "flex",
@@ -70,29 +71,27 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-export default function Home({ setComponent,setToText }) {
-  console.log("home rendered")
+export default function Home({setComponent, setToText}) {
+  const isTabletOrMobile = useMediaQuery({query: "(max-width: 1224px)"});
+  console.log("home rendered");
   //console.log(setToText)
   // React.useEffect(()=>{setToText(false)},[])
-  
-  const { classes } = useStyles();
+
+  const {classes} = useStyles();
   const spring = {
     type: "spring",
     damping: 15,
     stiffness: 100,
   };
-  function changeComponent(){
-    setToText(true)
+  function changeComponent() {
+    setToText(true);
     setComponent(<TextQAContainer />);
-    
-    
-    
   }
   // useEffect(()=>{setToText(false)},[])
   return (
     <motion.div
-      initial={{ opacity: 0, x: 100 }}
-      animate={{ opacity: 1, x: 0 }}
+      initial={{opacity: 0, x: 100}}
+      animate={{opacity: 1, x: 0}}
       transition={spring}
     >
       <Container>
@@ -102,7 +101,7 @@ export default function Home({ setComponent,setToText }) {
               An{" "}
               <span
                 className={classes.highlight}
-                style={{ backgroundColor: "#DCB0E2", color: "black" }}
+                style={{backgroundColor: "#DCB0E2", color: "black"}}
               >
                 AI
               </span>{" "}
@@ -125,7 +124,7 @@ export default function Home({ setComponent,setToText }) {
                 <ThemeIcon
                   size={20}
                   radius="xl"
-                  style={{ backgroundColor: "#C96FA7" }}
+                  style={{backgroundColor: "#C96FA7"}}
                 >
                   <IconCheck size={rem(12)} stroke={1.5} />
                 </ThemeIcon>
@@ -136,38 +135,42 @@ export default function Home({ setComponent,setToText }) {
                 justifyContent: "flex-start",
               }}
             >
-              <List.Item style={{ display: "flex" }}>
+              <List.Item style={{display: "flex"}}>
                 <b>Text QA</b> – Question answering from text data
               </List.Item>
-              <List.Item style={{ display: "flex" }}>
-              <b>Pdf QA</b> – Question answering from PDFs such as
-                research papers
+              <List.Item style={{display: "flex"}}>
+                <b>Pdf QA</b> – Question answering from PDFs such as research
+                papers
               </List.Item>
-              <List.Item style={{ display: "flex" }}>
+              <List.Item style={{display: "flex"}}>
                 <b>Text Summarize</b> – Limit content length with generative AI
               </List.Item>
             </List>
 
             <Group mt={30}>
-              <Button
-                radius="xl"
-                size="md"
-                className={classes.control}
-                style={{ backgroundColor: "#C96FA7" }}
-                onClick={()=> {changeComponent()}}
-              >
-                Get started
-              </Button>
+              {!isTabletOrMobile && (
+                <Button
+                  radius="xl"
+                  size="md"
+                  className={classes.control}
+                  style={{backgroundColor: "#C96FA7"}}
+                  onClick={() => {
+                    changeComponent();
+                  }}
+                >
+                  Get started
+                </Button>
+              )}
               <a href="https://github.com/pranjaldub/scanqa">
-              <Button
-                variant="default"
-                radius="xl"
-                size="md"
-                className={classes.control}
-                style={{ color: "#C96FA7" }}
-              >
-                Source code
-              </Button>
+                <Button
+                  variant="default"
+                  radius="xl"
+                  size="md"
+                  className={classes.control}
+                  style={{color: "#C96FA7"}}
+                >
+                  Source code
+                </Button>
               </a>
             </Group>
           </div>
